@@ -14,7 +14,7 @@ export const Cards: FC = observer(() => {
   return (
     <Container>
       {card.word.map((card) => (
-          <CardItem key={card.id} cards={card}
+          <CardItem key={card.id} cards={card} 
             draggable={true} currentCard={currentCard} setCurrentCard={setCurrentCard}/>
 
       ))}

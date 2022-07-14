@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const AddCardWrapper = styled.div(  {
     display: "inline-flex",
+    alignItems: "start",
     gap: 10,
     maxWidth: "250px",
     padding: "20px 0",

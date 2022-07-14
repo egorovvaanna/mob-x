@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div({
     display: "flex",
     justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 15,
 })
 

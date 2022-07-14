@@ -11,6 +11,11 @@ export const theme ={
           regular: '#091e183a',
           dimmed: '#091e4214',
         },
+        priority:{
+          hight : "rgba(219, 6, 6, 0.88)",
+          middle: "rgba(236, 225, 91, 0.74)",
+          low: "rgba(40, 183, 50, 0.6)"
+        },
       },
       rounding: {
         sm: 5,

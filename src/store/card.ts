@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { CardTypes } from "../types/cardTypes";
+import { CardTypes, checkList, Priority } from "../types/cardTypes";
 
 const sortCard = (a: CardTypes, b: CardTypes) => {
   if (a.order > b.order) return 1;
@@ -8,7 +8,20 @@ const sortCard = (a: CardTypes, b: CardTypes) => {
 };
 
 class Card {
-  word: CardTypes[] = [{ id: 1, order: 1, title: "some 1 mobX" }];
+  word: CardTypes[] = [
+    { id: 1, order: 1, title: "some 1 mobX", priority: "none" },
+    { id: 2, order: 2, title: "some 2 mobX", priority: "hight" },
+  ];
+  checkList: checkList[] = [
+    { idCard: 1, title: "do it", completed: true },
+    {
+      idCard: 1,
+      title:
+        "do itffffffffff ffftfffffffffffff tfffffffffffff tfffffffffffff tfffffffffffff  too",
+      completed: false,
+    },
+    { idCard: 2, title: "do it too23", completed: false },
+  ];
   constructor() {
     makeAutoObservable(this);
   }
@@ -28,10 +41,26 @@ class Card {
   addWord(title: string) {
     let id = Date.now();
     let num = this.word.length + 1;
-    this.word.push({ id, order: num, title });
+    this.word.push({ id, order: num, title, priority: "none" });
   }
   removeWord(id: number) {
     this.word = this.word.filter((el) => el.id !== id);
+  }
+  toggleCheck(id: number, title: string) {
+    this.checkList = this.checkList.map((el) =>
+      el.idCard === id && el.title === title
+        ? { ...el, completed: !el.completed }
+        : el
+    );
+  }
+  addCheckItem(idCard: number, title: string) {
+    this.checkList.push({ idCard, title, completed: false });
+  }
+  removeCheckItem(id: number, title: string) {
+    this.checkList = this.checkList.filter((el) => el.title !== title);
+  }
+  setPriority(id: number, priority: Priority) {
+    this.word = this.word.map((el) => el.id === id ? { ...el, priority }: { ...el });
   }
 }
 

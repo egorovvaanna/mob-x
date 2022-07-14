@@ -13,4 +13,5 @@ export const HeaderWrapper = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.glass.regular,
   textAlign: "start",
   padding: "10px 20px",
+  marginBottom: "15px"
 }));

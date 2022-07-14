@@ -17,10 +17,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     return (
       <ButtonWrapper
+        {...props}
         icon={!!icon}
         fullWidth={fullWidth}
         variant={variant}
-        {...props}
         ref={ref}>
         {icon && <ButtonIcon as={icon} />}
         {children}
