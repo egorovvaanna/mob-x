@@ -1,12 +1,17 @@
-import { Cards } from './components/Cards/Cards';
-import './App.css';
+import { ThemeProvider } from "styled-components";
+import { theme } from './styles/theme';
+import { Layout } from "./components/layout/Layout";
+
+import "./App.css";
+
 
 function App() {
-  
   return (
-    <div className="App">
-      <Cards/>
-    </div>
+    <ThemeProvider theme={theme}  >
+      <div className="App">
+        <Layout/>
+      </div>
+    </ThemeProvider>
   );
 }
 
