@@ -2,7 +2,6 @@ import { ComponentProps, FC, ReactNode, forwardRef } from "react";
 import { ButtonIcon, ButtonWrapper } from "./styles";
 
 export type ButtonVariant = "prymary" | "secondary" | "default";
-
 interface ButtonProps extends ComponentProps<"button"> {
   children?: null | ReactNode | ReactNode[];
   icon?: FC<ComponentProps<"svg">>;

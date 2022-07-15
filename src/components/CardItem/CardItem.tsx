@@ -1,60 +1,40 @@
-import { observer } from "mobx-react-lite";
 import { FC, useState } from "react";
+import { useInputCheck } from "../../hooks/useInputCheck";
+
+import { observer } from "mobx-react-lite";
 import card from "../../store/card";
-import { CardTypes } from "../../types/cardTypes";
+import {
+  dragDrop,
+  dragLeave,
+  dragOver,
+  dragStart,
+} from "../../store/dragNdrop";
+
 import { CardBottom } from "../CardBottom/CardBottom";
 import { CheckList } from "../CheckList/CheckList";
 import { Button } from "../common/Button/Button";
+
+import { CardTypes } from "../../types/cardTypes";
+
 import { ReactComponent as close } from "./../../utils/close.svg";
-import { Card } from "./styles";
+import { Card, Flex } from "./styles";
+import { Input } from "../AddCard/styles";
 
 interface CardItemProps {
   cards: CardTypes;
-  key: number;
   currentCard: CardTypes | null;
   setCurrentCard: (item: CardTypes) => void;
   draggable: boolean;
 }
 
 export const CardItem: FC<CardItemProps> = observer(
-  ({ cards, key, currentCard, setCurrentCard }) => {
+  ({ cards, currentCard, setCurrentCard }) => {
+    const inputCheck = useInputCheck(cards.id);
     const [visibleBottom, setVisibleBottom] = useState<boolean>(false);
 
     const deleteCard = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
       card.removeWord(id);
     };
-
-    const dragStart = (
-      event: React.DragEvent<HTMLDivElement>,
-      item: CardTypes
-    ): void => {
-      setCurrentCard(item);
-
-      const current = event.currentTarget.draggable === true;
-      if (current) event.currentTarget.style.removeProperty("background")
-    };
-
-    const dragOver = (event: React.DragEvent<HTMLDivElement>) => {
-      event.preventDefault();
-      const current = event.currentTarget.draggable === true;
-      if (current) event.currentTarget.style.background = "lightgray";
-    };
-
-    const dragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-      const current = event.currentTarget.draggable === true;
-      if (current) event.currentTarget.style.removeProperty("background")
-    };
-
-    const dragDrop = (
-      event: React.DragEvent<HTMLDivElement>,
-      item: CardTypes
-    ) => {
-      event.preventDefault();
-      card.changeOrder(item, currentCard!);
-      const current = event.currentTarget.draggable === true;
-      if (current) event.currentTarget.style.removeProperty("background");
-    };
-
 
     return (
       <Card
@@ -62,20 +42,25 @@ export const CardItem: FC<CardItemProps> = observer(
         priority={cards.priority}
         onMouseEnter={() => setVisibleBottom(true)}
         onMouseLeave={() => setVisibleBottom(false)}
-        onDragStart={(e) => dragStart(e, cards)}
+        onDragStart={(e) => dragStart(e, cards, setCurrentCard)}
         onDragOver={(e) => dragOver(e)}
         onDragLeave={(e) => dragLeave(e)}
-        onDrop={(e) => dragDrop(e, cards)}
+        onDrop={(e) => dragDrop(e, cards, currentCard!)}
         draggable={true}>
-        {cards.title}
+        <Flex>
+          <p>{cards.title}</p>
 
-        <Button
-          variant="secondary"
-          icon={close}
-          onClick={(e) => deleteCard(e, cards.id)}
-        />
+          <Button
+            variant="secondary"
+            icon={close}
+            onClick={(e) => deleteCard(e, cards.id)}
+          />
+        </Flex>
+
+        {cards.addCheckList && <Input {...inputCheck} placeholder={"New"} />}
 
         <CheckList id={cards.id} />
+
         <CardBottom visible={visibleBottom} id={cards.id} />
       </Card>
     );

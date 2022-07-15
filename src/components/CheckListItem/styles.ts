@@ -24,6 +24,7 @@ export const CheckItem = styled.div(({ theme }) => ({
   alignItems: "start",
   justifyContent: "start",
   gap: 10,
+  marginBottom: "5px",
   ":hover": {
     backgroundColor: theme.colors.glass.dimmed,
   },

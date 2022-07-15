@@ -9,8 +9,8 @@ const sortCard = (a: CardTypes, b: CardTypes) => {
 
 class Card {
   word: CardTypes[] = [
-    { id: 1, order: 1, title: "some 1 mobX", priority: "none" },
-    { id: 2, order: 2, title: "some 2 mobX", priority: "hight" },
+    { id: 1, order: 1, title: "some 1 mobX", priority: "none", addCheckList: false },
+    { id: 2, order: 2, title: "some 2 mobX", priority: "hight", addCheckList: false },
   ];
   checkList: checkList[] = [
     { idCard: 1, title: "do it", completed: true },
@@ -38,14 +38,17 @@ class Card {
       })
       .sort(sortCard);
   }
+
   addWord(title: string) {
     let id = Date.now();
     let num = this.word.length + 1;
-    this.word.push({ id, order: num, title, priority: "none" });
+    this.word.push({ id, order: num, title, priority: "none", addCheckList: false });
   }
+
   removeWord(id: number) {
     this.word = this.word.filter((el) => el.id !== id);
   }
+
   toggleCheck(id: number, title: string) {
     this.checkList = this.checkList.map((el) =>
       el.idCard === id && el.title === title
@@ -53,15 +56,21 @@ class Card {
         : el
     );
   }
+
   addCheckItem(idCard: number, title: string) {
     this.checkList.push({ idCard, title, completed: false });
   }
+
   removeCheckItem(id: number, title: string) {
     this.checkList = this.checkList.filter((el) => el.title !== title);
   }
+
   setPriority(id: number, priority: Priority) {
     this.word = this.word.map((el) => el.id === id ? { ...el, priority }: { ...el });
   }
+   toggleAddCheckList (id: number, isCheckList: boolean){
+    this.word = this.word.map(el => el.id === id ? {...el, addCheckList: isCheckList} : {...el})
+   }
 }
 
 export default new Card();

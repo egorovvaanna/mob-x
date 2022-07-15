@@ -1,42 +1,38 @@
-import { FC, useRef, KeyboardEvent } from "react";
-import { CheckListWrapper } from "./styles";
-import { Button } from "../common/Button/Button";
+import { FC } from "react";
 import card from "../../store/card";
 import { observer } from "mobx-react-lite";
-import { CheckListItem } from "../CheckListItem/CheckListItem";
-import { Input } from "../AddCard/styles";
 
+import { CheckListItem } from "../CheckListItem/CheckListItem";
+import { useInputCheck } from "../../hooks/useInputCheck";
+
+import { ReactComponent as Completed } from "./../../utils/complete.svg";
+
+import { Input } from "../AddCard/styles";
+import { CheckListWrapper, CompleteOfCheck } from "./styles";
 export interface checkListProps {
   id: number;
 }
 
 export const CheckList: FC<checkListProps> = observer(({ id }) => {
   const isCheckList = card.checkList.filter((el) => el.idCard === id);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const allTasks = card.checkList.filter((el) => el.idCard === id);
+  const completedTasks = allTasks.filter((el) => el.completed === true);
 
-  const addCheckItem = (e: KeyboardEvent) => {
-    if (e.key === "Enter") {
-      const title = inputRef.current!.value.trim();
-      title && card.addCheckItem(id, title);
-      inputRef.current!.value = "";
-    }
-  };
+  const inputCkeck = useInputCheck(id);
 
   return !!isCheckList.length ? (
     <CheckListWrapper draggable={false}>
       <hr />
-
       {isCheckList.map((el) => (
         <CheckListItem key={el.title} checkList={el} />
       ))}
 
-      <Input
-        ref={inputRef}
-        placeholder={"New"}
-        onKeyDown={(e) => addCheckItem(e)}
-      />
+      <CompleteOfCheck>
+        <Completed />
+        {completedTasks.length} / {allTasks.length}
+      </CompleteOfCheck>
+
+      <Input placeholder={"New"} {...inputCkeck} />
     </CheckListWrapper>
-  ) : (
-    <></>
-  );
+  ) : null;
 });
