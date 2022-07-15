@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { Input } from "../AddCard/styles"
 
 interface CardProps {
     priority: string
